@@ -450,7 +450,7 @@ export default {
       this.now = new Date()
     }, tickInterval)
 
-    if (this.lifeline) {
+    if (this.lifeline !== null) {
       this.currentModule = this.lifeline
       this.currentModuleStart = new Date()
     } else {
