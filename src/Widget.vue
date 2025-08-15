@@ -171,13 +171,7 @@ export default {
     // Ascending sizes work like breakpoints, adding an html attribute to the container
     size: "hide",
     sizes: [
-      [0, "hide"],
-      [224, "xs"],
-      [320, "sm"],
-      [540, "md"],
-      [960, "lg"],
-      [1200, "xl"],
-      [2000, "ultra-wide"],
+      [0, "ultra-stretch"],
     ],
     lastSize: 0,
   }),
@@ -379,31 +373,9 @@ ccw-w {
 
   height: $cubit;
 
-  &[size="lg"] {
-    font-size: 13.75px;
-  }
-
-  &[size="ultra-wide"] {
-    font-size: 18px;
-    height: 140px;
-  }
-
-  &[size="md"] {
-    font-size: 14.25px;
-    height: 2 * ($cubit - 24px);
-    flex-direction: row;
-  }
-
-  &[size="sm"] {
-    font-size: 11px;
-    height: 2 * ($cubit - 36px);
-    flex-direction: row;
-  }
-
-  &[size="xs"] {
-    font-size: 7px;
-    height: 2 * ($cubit - 56px);
-    flex-direction: row;
+  &[size="ultra-stretch"] {
+    font-size: 28px;
+    height: 240px;
   }
 }
 
@@ -478,64 +450,19 @@ ccw-panel {
 
   height: $cubit - 24px;
 
-  ccw-w[size="lg"] & {
-    ccw-span {
-      padding: $txtPad $txtPad * 2 - 4px;
-    }
-
-    >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 16px;
-    }
-  }
-
-  ccw-w[size="ultra-wide"] & {
-    height: 140px - 24px;
+  ccw-w[size="ultra-stretch"] & {
+    height: 240px - 24px;
     
     ccw-span {
-      padding: $txtPad $txtPad * 3;
+      padding: $txtPad $txtPad * 5;
     }
 
     >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 24px;
+      font-size: 48px;
     }
 
     >ccw-div>ccw-span:nth-of-type(2) {
-      font-size: 20px;
-    }
-  }
-
-  ccw-w[size="md"] & {
-    height: $cubit - 36px;
-    flex: 1 0 100%; // also ccw-ticker
-
-    >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 16px;
-    }
-  }
-
-  ccw-w[size="sm"] & {
-    height: $cubit - 48px;
-    flex: 1 0 100%; // also ccw-ticker
-
-    ccw-span {
-      padding: $txtPad $txtPad * 2 - 4px;
-    }
-
-    >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 13.5px;
-    }
-  }
-
-  ccw-w[size="xs"] & {
-    height: $cubit - 68px;
-    flex: 1 0 100%; // also ccw-ticker
-
-    ccw-span {
-      padding: $txtPad $txtPad;
-    }
-
-    >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 9px;
+      font-size: 40px;
     }
   }
 
@@ -572,9 +499,7 @@ ccw-panel {
       }
     }
 
-    ccw-w[size="lg"] & {
-      flex: 1 0 100%;
-    }
+
   }
 
 
@@ -592,28 +517,10 @@ ccw-readout {
   position: relative;
   overflow: hidden;
 
-  ccw-w[size="lg"] & {
-    line-height: 1.3;
-    font-size: 50px;
-  }
-
-  ccw-w[size="ultra-wide"] & {
-    font-size: 80px;
-    line-height: 1.2;
-    margin: 0 24px;
-  }
-
-  ccw-w[size="md"] & {
-    font-size: 50px;
-  }
-
-  ccw-w[size="sm"] & {
-    font-size: 35px;
-    line-height: 1.3;
-  }
-
-  ccw-w[size="xs"] & {
-    font-size: 23px;
+  ccw-w[size="ultra-stretch"] & {
+    font-size: 160px;
+    line-height: 1.0;
+    margin: 0 40px;
   }
 
   ccw-span {
@@ -625,33 +532,9 @@ ccw-readout {
     padding: 0;
     background: transparent;
 
-    ccw-w[size="lg"] & {
-      font-size: 21px;
-      margin-bottom: -4px;
-      padding: 0;
-    }
-
-    ccw-w[size="ultra-wide"] & {
-      font-size: 32px;
-      margin-bottom: -8px;
-      padding: 0;
-    }
-
-    ccw-w[size="md"] & {
-      font-size: 20px;
-      margin-bottom: -5px;
-      padding: 0;
-    }
-
-    ccw-w[size="sm"] & {
-      font-size: 14px;
-      margin-bottom: -3px;
-      padding: 0;
-    }
-
-    ccw-w[size="xs"] & {
-      font-size: 9px;
-      margin-bottom: -3px;
+    ccw-w[size="ultra-stretch"] & {
+      font-size: 64px;
+      margin-bottom: -16px;
       padding: 0;
     }
   }
