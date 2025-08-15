@@ -5,10 +5,6 @@
     <div class="cleanslate">
       <ccw-w :class="[flatten ? 'flatten' : '', lifeline]" :id="`ccw-container-${_uid}`" :size="size" :dark="dark"
         @click="handleClick">
-        <ccw-brand>
-          <img logo svg-inline src="./climateclock.svg" />
-          <ccw-span>#ActInTime</ccw-span>
-        </ccw-brand>
         <ccw-flexwrap>
           <ccw-panel deadline>
             <ccw-div>
@@ -21,45 +17,6 @@
                 pad(remaining.seconds, 2) }}
             </ccw-readout>
           </ccw-panel>
-          <ccw-panel lifeline>
-            <ccw-div>
-              <ccw-span>LIFELINE</ccw-span>
-              <ccw-span v-if="currentModule == 0">{{ renewables.labels && renewables.labels[0] }}</ccw-span>
-              <ccw-span v-else-if="currentModule == 1">{{ indie.labels && indie.labels[0] }}</ccw-span>
-              <ccw-span v-else-if="currentModule == 2">{{ debt7.labels && debt7.labels[0] }}</ccw-span>
-              <ccw-span v-else-if="currentModule == 3">{{ women.labels && women.labels[0] }}</ccw-span>
-              <ccw-span v-else-if="currentModule == 4">{{ divestment.labels && divestment.labels[0] }}</ccw-span>
-              <ccw-span v-else-if="currentModule == 5">{{ regen.labels && regen.labels[0] }}</ccw-span>
-              <ccw-span v-else-if="currentModule == 6">{{ actnow.labels && actnow.labels[0] }}</ccw-span>
-              <ccw-span v-else-if="currentModule == 7">{{ subsidies.labels && subsidies.labels[0] }}</ccw-span>
-              <ccw-span v-else-if="currentModule == 8">{{ initiative.labels && initiative.labels[0] }}</ccw-span>
-              <ccw-span v-else>{{ label }}</ccw-span>
-            </ccw-div>
-            <ccw-readout v-if="currentModule == 0">{{ renewableValue.split(".")[0] }}<ccw-span>.</ccw-span>{{
-              renewableValue.split(".")[1] }}%</ccw-readout>
-            <ccw-readout v-else-if="currentModule == 1">{{ indieValue }}<ccw-span v-if="size != 'lg'">
-              </ccw-span>km²</ccw-readout>
-            <ccw-readout v-else-if="currentModule == 2">${{ debt7Value[0] }}<ccw-span>.</ccw-span>{{ debt7Value[1]
-              }}<ccw-span>Trillion</ccw-span></ccw-readout>
-            <ccw-readout v-else-if="currentModule == 3">{{ womenValue }}% WOMEN</ccw-readout>
-            <ccw-readout v-else-if="currentModule == 4">${{ divestmentValue[0] }}<ccw-span>.</ccw-span>{{
-              divestmentValue[1]
-              }}<ccw-span>Trillion</ccw-span></ccw-readout>
-            <ccw-readout v-else-if="currentModule == 5">{{ regenValue }}<ccw-span>{{ regen.unit_labels[0]
-                }}</ccw-span></ccw-readout>
-            <ccw-readout v-else-if="currentModule == 6">${{ actnowValue
-              }}<ccw-span></ccw-span><ccw-span>Trillion</ccw-span></ccw-readout>
-            <ccw-readout v-else-if="currentModule == 7">${{ subsidiesValue
-              }}<ccw-span></ccw-span><ccw-span>Billion</ccw-span></ccw-readout>
-            <ccw-readout v-else-if="currentModule == 8">{{ initiativeValue[0] }}<ccw-span></ccw-span>{{
-              initiativeValue[1] }}<ccw-span></ccw-span></ccw-readout>
-            <ccw-readout v-else>{{ customValues[0] }}<ccw-span>{{ units1 }}</ccw-span>{{ customValues[1] }}<ccw-span>{{
-                units2 }}</ccw-span></ccw-readout>
-          </ccw-panel>
-          <ccw-ticker>
-            <ccw-div one :style="animationDuration">{{ feedText }}</ccw-div>
-            <ccw-div two :style="animationDuration">{{ feedText }}</ccw-div>
-          </ccw-ticker>
         </ccw-flexwrap>
       </ccw-w>
     </div>
@@ -166,21 +123,14 @@
 import { DateTime, Settings } from "luxon"
 import debounce from "lodash.debounce"
 
-const lifelineCycleDuration = 5000
+
 
 Settings.defaultZone = "utc"
 
 export default {
   props: {
     bottom: { type: Boolean, default: false },
-    newsfeed: { type: String, default: null },
     flatten: { type: Boolean, default: false },
-    lifeline: { default: null },
-    label: { type: String, default: null },
-    value1: { type: String, default: null },
-    value2: { type: String, default: null },
-    units1: { type: String, default: null },
-    units2: { type: String, default: null },
   },
   components: {
     // Lazy-load this component
@@ -194,17 +144,10 @@ export default {
     now: null,
     deadline: null,
 
-    // The computed feed
-    feed: "",
+
 
     // Modules
-    currentModule: 0,
-    currentModuleStart: 2 ** 42,
     carbon: {},
-    renewables: {},
-    gcf: {},
-    debt7: {},
-    debt20: {},
 
     // Chart
     A: 2,
@@ -234,6 +177,7 @@ export default {
       [540, "md"],
       [960, "lg"],
       [1200, "xl"],
+      [2000, "ultra-wide"],
     ],
     lastSize: 0,
   }),
@@ -242,106 +186,9 @@ export default {
       if (!this.deadline) return {}
       return this.deadline.diff(DateTime.fromJSDate(this.now), ["years", "days", "hours", "minutes", "seconds"])
     },
-    // In a less quick-and-dirty version, a single rate calculation function would be called for each module value here
-    renewableValue() {
-      let tElapsed = this.now - new Date(this.renewables.timestamp).getTime()
-      return (this.renewables.initial + (tElapsed / 1000) * this.renewables.rate).toFixed(9)
-    },
-    /*
-    gcfValue() {
-      let tElapsed = this.now - new Date(this.gcf.timestamp).getTime()
-      return (this.gcf.initial + (tElapsed / 1000) * this.gcf.rate).toFixed(2)
-    },
-    */
-    indieValue() {
-      let tElapsed = this.now - new Date(this.indie.timestamp).getTime()
-      return ((this.indie.initial + (tElapsed / 1000) * this.indie.rate) * 1e6).toLocaleString("en-us")
-    },
-    womenValue() {
-      let tElapsed = this.now - new Date(this.women.timestamp).getTime()
-      return (this.women.initial + (tElapsed / 1000) * this.women.rate).toFixed(1)
-    },
-    debt7Value() {
-      let tElapsed = this.now - new Date(this.debt7.timestamp).getTime()
-      let val = this.debt7.initial + (tElapsed / 1000) * this.debt7.rate
-      return [parseInt(val), (val - parseInt(val)).toFixed(8).slice(2)]
-    },
-    debt20Value() {
-      let tElapsed = this.now - new Date(this.debt20.timestamp).getTime()
-      let val = this.debt20.initial + (tElapsed / 1000) * this.debt20.rate
-      return [parseInt(val), (val - parseInt(val)).toFixed(8).slice(2)]
-    },
-    divestmentValue() {
-      let elapsed, val
 
-      let countOffset = this.now - this.currentModuleStart
-      if (countOffset < this.divestment.count_up_ms) {
-        // ehhh, it probably works!
-        let targetTime = this.currentModuleStart.getTime() + this.divestment.count_up_ms
-        let targetVal = this.divestment.initial + (targetTime / 1000) * this.divestment.rate
-        val = (targetVal / this.divestment.count_up_ms) * countOffset
-      } else {
-        elapsed = this.now - new Date(this.divestment.timestamp).getTime()
-        val = this.divestment.initial + (elapsed / 1000) * this.divestment.rate
-      }
-      return [parseInt(val), (val - parseInt(val)).toFixed(2).slice(2)]
-    },
-    regenValue() {
-      let tElapsed = this.now - new Date(this.regen.timestamp).getTime()
-      let val = this.regen.initial + (tElapsed / 1000) * this.regen.rate
-      return val.toLocaleString("en-us")
-    },
-    actnowValue() {
-      let tElapsed = this.now - new Date(this.actnow.timestamp).getTime()
-      return (this.actnow.initial + (tElapsed / 1000) * this.actnow.rate).toFixed(0)
-    },
-    subsidiesValue() {
-      let tElapsed = this.now - new Date(this.subsidies.timestamp).getTime()
-      return (this.subsidies.initial + (tElapsed / 1000) * this.subsidies.rate).toFixed(0)
-    },
-    initiativeValue() {
-      let tElapsed = this.now - new Date(this.initiative.timestamp).getTime()
-      let val = this.initiative.initial + (tElapsed / 1000) * this.initiative.rate
 
-      // TODO: PLEASE simplify this after a proper night's sleep
-      let pauseMs = 1000
-      let currentYear = new Date().getFullYear()
 
-      let animationYearSpan = 2030 - currentYear + 1
-      let animationReductionPerYear = (30 - val) / animationYearSpan
-      let animationYearDurationMs = (lifelineCycleDuration - pauseMs) / animationYearSpan
-      let animationTimeElapsed = this.now - this.currentModuleStart.getTime()
-      let animationYear = 2030 - Math.floor(animationTimeElapsed / animationYearDurationMs)
-      let animationVal = val - animationReductionPerYear * (currentYear - animationYear)
-
-      if (animationYear > currentYear) {
-        return [animationVal.toFixed(1), `% by ${animationYear}`]
-      } else {
-        return [val, `% in ${currentYear}`]
-      }
-    },
-
-    // Supplied as props (html attributes value1/units1, value2/units2)
-    customValues() {
-      let countUpMs = lifelineCycleDuration
-
-      let currentRunningDuration = this.now - this.currentModuleStart
-      let val1 = this.value1
-      let val2 = this.value2
-      if (currentRunningDuration < countUpMs) {
-        val1 = (this.value1 / countUpMs) * currentRunningDuration
-        val2 = (this.value2 / countUpMs) * currentRunningDuration
-      }
-      return [parseInt(val1), parseInt(val2)]
-    },
-
-    // Items below are skin/theme-specific
-    animationDuration() {
-      return { animationDuration: 0.15 * this.feedText.length + "s" }
-    },
-    feedText() {
-      return (this.newsfeed ? `${this.newsfeed} | ` : "") + this.feed
-    },
 
     // Chart thing
     scenarioText() {
@@ -412,24 +259,7 @@ export default {
       .then((res) => {
         let modules = res.data.data.modules
         this.carbon = modules.carbon_deadline_1
-        this.renewables = modules.renewables_1
-        // Join all the news items into a convenient string
-        this.feed = modules.newsfeed_1.newsfeed.map((n) => n.headline).join(" | ") + " | "
-        this.indie = modules.indigenous_land_1
-        this.women = modules.women_in_parliaments
-        this.debt7 = modules.loss_damage_g7_debt
-        this.debt20 = modules.loss_damage_g20_debt
-
-        this.divestment = modules.ff_divestment_stand_dot_earth
-        this.divestment.count_up_ms = this.divestment.count_up_duration * 1000
-
-        this.actnow = modules.actnow
-        this.subsidies = modules.end_subsidies
-        this.initiative = modules.initiative_30x30
-
         this.deadline = DateTime.fromISO(this.carbon.timestamp)
-
-        this.regen = modules.regen_agriculture
       })
       .catch((err) => {
         // eslint-disable-next-line
@@ -450,16 +280,7 @@ export default {
       this.now = new Date()
     }, tickInterval)
 
-    if (this.lifeline !== null) {
-      this.currentModule = this.lifeline
-      this.currentModuleStart = new Date()
-    } else {
-      // currentModule is selected as an offset from when the widget was opened
-      setInterval(() => {
-        this.currentModuleStart = this.now
-        this.currentModule = (this.currentModule + 1) % 9
-      }, lifelineCycleDuration)
-    }
+    // Removed lifeline cycling since we only show the deadline now
 
     if (this.flatten || new URLSearchParams(window.location.search).has("flatten")) {
       this.showChart = true
@@ -483,38 +304,7 @@ export default {
 </script>
 
 <style lang="scss">
-@mixin debug($color, $text) {
-  &:after {
-    content: $text;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-color: $color;
-    padding: 4px;
-  }
-}
 
-@if $NODE_ENV =="development" {
-  [size="xs"] {
-    @include debug(pink, "xs");
-  }
-
-  [size="sm"] {
-    @include debug(red, "sm");
-  }
-
-  [size="md"] {
-    @include debug(orange, "md");
-  }
-
-  [size="lg"] {
-    @include debug(yellow, "lg");
-  }
-
-  [size="xl"] {
-    @include debug(green, "xl");
-  }
-}
 
 @import "cleanslate";
 @import "matthewha";
@@ -591,6 +381,11 @@ ccw-w {
 
   &[size="lg"] {
     font-size: 13.75px;
+  }
+
+  &[size="ultra-wide"] {
+    font-size: 18px;
+    height: 140px;
   }
 
   &[size="md"] {
@@ -678,7 +473,7 @@ ccw-panel {
   color: black;
   letter-spacing: -1px;
 
-  flex: 1 0 49%; // 50% causes wrapping!
+  flex: 1 0 100%; // Take full width since we removed the lifeline panel
   overflow: hidden;
 
   height: $cubit - 24px;
@@ -690,6 +485,22 @@ ccw-panel {
 
     >ccw-div>ccw-span:nth-of-type(1) {
       font-size: 16px;
+    }
+  }
+
+  ccw-w[size="ultra-wide"] & {
+    height: 140px - 24px;
+    
+    ccw-span {
+      padding: $txtPad $txtPad * 3;
+    }
+
+    >ccw-div>ccw-span:nth-of-type(1) {
+      font-size: 24px;
+    }
+
+    >ccw-div>ccw-span:nth-of-type(2) {
+      font-size: 20px;
     }
   }
 
@@ -762,37 +573,11 @@ ccw-panel {
     }
 
     ccw-w[size="lg"] & {
-      flex: 0 1 48%;
+      flex: 1 0 100%;
     }
   }
 
-  &[lifeline] {
-    background: $secondary;
 
-    ccw-div {
-      background: black;
-      color: $secondary;
-    }
-
-    ccw-span:first-of-type {
-      background: $secondary;
-      color: black;
-    }
-
-    ccw-w[dark] & {
-      color: $secondary;
-      background: $secondaryDark;
-
-      ccw-span:first-of-type {
-        background: $secondaryDark;
-        color: $secondary;
-      }
-    }
-
-    ccw-w[size="lg"] & {
-      flex: 1 0 45%;
-    }
-  }
 }
 
 $ccwFont: 70px;
@@ -810,6 +595,12 @@ ccw-readout {
   ccw-w[size="lg"] & {
     line-height: 1.3;
     font-size: 50px;
+  }
+
+  ccw-w[size="ultra-wide"] & {
+    font-size: 80px;
+    line-height: 1.2;
+    margin: 0 24px;
   }
 
   ccw-w[size="md"] & {
@@ -837,6 +628,12 @@ ccw-readout {
     ccw-w[size="lg"] & {
       font-size: 21px;
       margin-bottom: -4px;
+      padding: 0;
+    }
+
+    ccw-w[size="ultra-wide"] & {
+      font-size: 32px;
+      margin-bottom: -8px;
       padding: 0;
     }
 
