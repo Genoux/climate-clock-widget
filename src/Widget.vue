@@ -361,8 +361,8 @@ ccw-w {
   height: $cubit;
 
   &[size="ultra-stretch"] {
-    font-size: 28px;
-    height: 240px;
+    font-size: 18px;
+    height: 140px;
   }
 }
 
@@ -438,18 +438,18 @@ ccw-panel {
   height: $cubit - 24px;
 
   ccw-w[size="ultra-stretch"] & {
-    height: 240px - 24px;
+    height: 140px - 24px;
     
     ccw-span {
-      padding: $txtPad $txtPad * 5;
+      padding: $txtPad $txtPad * 3;
     }
 
     >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 48px;
+      font-size: 24px;
     }
 
     >ccw-div>ccw-span:nth-of-type(2) {
-      font-size: 40px;
+      font-size: 20px;
     }
   }
 
@@ -505,9 +505,9 @@ ccw-readout {
   overflow: hidden;
 
   ccw-w[size="ultra-stretch"] & {
-    font-size: 160px;
-    line-height: 1.0;
-    margin: 0 40px;
+    font-size: 80px;
+    line-height: 1.2;
+    margin: 0 24px;
   }
 
   ccw-span {
@@ -520,8 +520,8 @@ ccw-readout {
     background: transparent;
 
     ccw-w[size="ultra-stretch"] & {
-      font-size: 64px;
-      margin-bottom: -16px;
+      font-size: 32px;
+      margin-bottom: -8px;
       padding: 0;
     }
   }
