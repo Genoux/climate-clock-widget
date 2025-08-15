@@ -169,7 +169,7 @@ export default {
 
     // Items below are skin/theme-specific (TODO: settle on defaults for all skins/themes)
     // Ascending sizes work like breakpoints, adding an html attribute to the container
-    size: "hide",
+    size: "ultra-stretch",
     sizes: [
       [0, "ultra-stretch"],
     ],
@@ -191,24 +191,11 @@ export default {
   },
   methods: {
     setSize() {
-      // Toggle this to force-re-render (hack: https://michaelnthiessen.com/force-re-render/)
+      // Always use ultra-stretch mode for signage display
       let chartShouldBeShown = this.showChart
-      let currentViewportSize = window.innerWidth
-      // Don't force-re-render before the first view, or when size hasn't changed
-      if (this.ready && this.lastSize != currentViewportSize) {
-        this.showChart = false
-      }
-      this.lastSize = currentViewportSize
-
-      this.$nextTick(() => {
-        let width = document.getElementById(`ccw-container-${this._uid}`).clientWidth
-        for (let sz of this.sizes) {
-          if (width < sz[0]) break
-          this.size = sz[1]
-        }
-        this.ready = true
-        this.showChart = chartShouldBeShown
-      })
+      this.size = "ultra-stretch"
+      this.ready = true
+      this.showChart = chartShouldBeShown
     },
     // Items below are skin/theme-specific
     pad(n, length = 2) {
@@ -219,9 +206,9 @@ export default {
     },
     handleClick() {
       if (this.lifeline == "cleancreatives") {
-        window.open("https://cleancreatives.org")
+        //window.open("https://cleancreatives.org")
       } else if (!window.location.hostname.includes("climateclock.world")) {
-        window.open("https://climateclock.world")
+        //window.open("https://climateclock.world")
       } else {
         this.showChart = !this.showChart
       }
