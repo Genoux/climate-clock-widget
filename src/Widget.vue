@@ -169,9 +169,9 @@ export default {
 
     // Items below are skin/theme-specific (TODO: settle on defaults for all skins/themes)
     // Ascending sizes work like breakpoints, adding an html attribute to the container
-    size: "ultra-stretch",
+    size: "normal",
     sizes: [
-      [0, "ultra-stretch"],
+      [0, "normal"],
     ],
     lastSize: 0,
   }),
@@ -191,9 +191,9 @@ export default {
   },
   methods: {
     setSize() {
-      // Always use ultra-stretch mode for signage display
+      // Always use normal mode - works on any resolution
       let chartShouldBeShown = this.showChart
-      this.size = "ultra-stretch"
+      this.size = "normal"
       this.ready = true
       this.showChart = chartShouldBeShown
     },
@@ -360,9 +360,9 @@ ccw-w {
 
   height: $cubit;
 
-  &[size="ultra-stretch"] {
+  &[size="normal"] {
     font-size: 18px;
-    height: 140px;
+    height: 112px;
   }
 }
 
@@ -437,19 +437,19 @@ ccw-panel {
 
   height: $cubit - 24px;
 
-  ccw-w[size="ultra-stretch"] & {
-    height: 140px - 24px;
+  ccw-w[size="normal"] & {
+    height: 112px - 24px;
     
     ccw-span {
-      padding: $txtPad $txtPad * 3;
+      padding: $txtPad $txtPad * 2;
     }
 
     >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 24px;
+      font-size: 18px;
     }
 
     >ccw-div>ccw-span:nth-of-type(2) {
-      font-size: 20px;
+      font-size: 16px;
     }
   }
 
@@ -504,10 +504,10 @@ ccw-readout {
   position: relative;
   overflow: hidden;
 
-  ccw-w[size="ultra-stretch"] & {
-    font-size: 80px;
-    line-height: 1.2;
-    margin: 0 24px;
+  ccw-w[size="normal"] & {
+    font-size: 59px;
+    line-height: 1.1;
+    margin: 0 12px;
   }
 
   ccw-span {
@@ -519,9 +519,9 @@ ccw-readout {
     padding: 0;
     background: transparent;
 
-    ccw-w[size="ultra-stretch"] & {
-      font-size: 32px;
-      margin-bottom: -8px;
+    ccw-w[size="normal"] & {
+      font-size: 27px;
+      margin-bottom: -6px;
       padding: 0;
     }
   }
