@@ -11,6 +11,14 @@
   ],
   "routes": [
     {
+      "src": "/widget-v2.js",
+      "dest": "/widget-v2.js"
+    },
+    {
+      "src": "/flatten.js",
+      "dest": "/flatten.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
