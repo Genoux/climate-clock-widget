@@ -8,11 +8,11 @@
         <ccw-flexwrap>
           <ccw-panel deadline>
             <ccw-div>
-              <ccw-span>DATE LIMITE</ccw-span>
-              <ccw-span>TEMPS RESTANT POUR LIMITER LE RÉCHAUFFEMENT CLIMATIQUE À 1,5 °C</ccw-span>
+              <ccw-span>DEADLINE</ccw-span>
+              <ccw-span>{{ carbon.labels && carbon.labels[0] }}</ccw-span>
             </ccw-div>
             <ccw-readout>
-              {{ remaining.years }}<ccw-span>ANS</ccw-span>{{ pad(remaining.days, 3) }}<ccw-span>JOURS</ccw-span>{{
+              {{ remaining.years }}<ccw-span>YRS</ccw-span>{{ pad(remaining.days, 3) }}<ccw-span>DAYS</ccw-span>{{
                 pad(remaining.hours, 2) }}<ccw-span>:</ccw-span>{{ pad(remaining.minutes, 2) }}<ccw-span>:</ccw-span>{{
                 pad(remaining.seconds, 2) }}
             </ccw-readout>
@@ -120,8 +120,8 @@
 </template>
 
 <script>
-import debounce from "lodash.debounce"
 import { DateTime, Settings } from "luxon"
+import debounce from "lodash.debounce"
 
 
 
@@ -335,10 +335,9 @@ ccw-w {
   flex-direction: row-reverse;
   justify-content: space-between;
   font-weight: normal;
-  font-size: 28px;
+  font-size: 18px;
   position: relative;
-  width: 3840px;
-  height: 600px;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
 
@@ -359,7 +358,12 @@ ccw-w {
     font-family: "katwijk_monoblack", "Lucida Console", Monaco, monospace;
   }
 
-  // Removed height settings - now fixed at 600px above
+  height: $cubit;
+
+  &[size="ultra-stretch"] {
+    font-size: 28px;
+    height: 240px;
+  }
 }
 
 // Custom classes: Clean Creatives
@@ -430,18 +434,23 @@ ccw-panel {
 
   flex: 1 0 100%; // Take full width since we removed the lifeline panel
   overflow: hidden;
-  height: 600px;
 
-  ccw-span {
-    padding: $txtPad $txtPad * 5;
-  }
+  height: $cubit - 24px;
 
-  >ccw-div>ccw-span:nth-of-type(1) {
-    font-size: 120px;
-  }
+  ccw-w[size="ultra-stretch"] & {
+    height: 240px - 24px;
+    
+    ccw-span {
+      padding: $txtPad $txtPad * 5;
+    }
 
-  >ccw-div>ccw-span:nth-of-type(2) {
-    font-size: 100px;
+    >ccw-div>ccw-span:nth-of-type(1) {
+      font-size: 48px;
+    }
+
+    >ccw-div>ccw-span:nth-of-type(2) {
+      font-size: 40px;
+    }
   }
 
   ccw-span {
@@ -487,22 +496,34 @@ $ccwFont: 70px;
 
 ccw-readout {
   flex: 2 0 0;
-  font-size: 400px;
+  font-size: 59px;
   letter-spacing: -2px;
-  line-height: 1.0;
+  line-height: 1.1;
   text-align: left;
-  margin: 0 100px;
+  margin: 0 12px;
   position: relative;
   overflow: hidden;
+
+  ccw-w[size="ultra-stretch"] & {
+    font-size: 160px;
+    line-height: 1.0;
+    margin: 0 40px;
+  }
 
   ccw-span {
     // Smaller labels
     line-height: 1;
-    margin-bottom: -40px;
-    margin-right: 5px;
-    font-size: 160px;
+    margin-bottom: -6px;
+    margin-right: 2px;
+    font-size: 27px;
     padding: 0;
     background: transparent;
+
+    ccw-w[size="ultra-stretch"] & {
+      font-size: 64px;
+      margin-bottom: -16px;
+      padding: 0;
+    }
   }
 }
 
