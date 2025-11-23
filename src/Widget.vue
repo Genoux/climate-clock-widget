@@ -8,11 +8,11 @@
         <ccw-flexwrap>
           <ccw-panel deadline>
             <ccw-div>
-              <ccw-span>DEADLINE</ccw-span>
-              <ccw-span>{{ carbon.labels && carbon.labels[0] }}</ccw-span>
+              <ccw-span>DATE LIMITE</ccw-span>
+              <ccw-span>TEMPS RESTANT POUR LIMITER LE RÉCHAUFFEMENT CLIMATIQUE À 1,5 °C</ccw-span>
             </ccw-div>
             <ccw-readout>
-              {{ remaining.years }}<ccw-span>YRS</ccw-span>{{ pad(remaining.days, 3) }}<ccw-span>DAYS</ccw-span>{{
+              {{ remaining.years }}<ccw-span>ANS</ccw-span>{{ pad(remaining.days, 3) }}<ccw-span>JOURS</ccw-span>{{
                 pad(remaining.hours, 2) }}<ccw-span>:</ccw-span>{{ pad(remaining.minutes, 2) }}<ccw-span>:</ccw-span>{{
                 pad(remaining.seconds, 2) }}
             </ccw-readout>
@@ -120,8 +120,8 @@
 </template>
 
 <script>
-import { DateTime, Settings } from "luxon"
 import debounce from "lodash.debounce"
+import { DateTime, Settings } from "luxon"
 
 
 
@@ -290,6 +290,22 @@ export default {
 @import "cleanslate";
 @import "matthewha";
 
+.cleanslate {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 3840px !important;
+  min-width: 3840px !important;
+}
+
+body, html {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: visible !important;
+  overflow-y: hidden !important;
+  min-width: 3840px !important;
+  width: 3840px !important;
+}
+
 $accent: #eb1c23;
 $accentDark: #940000;
 $secondary: #4aa1cc;
@@ -332,14 +348,17 @@ ccw-w {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: flex-start;
   font-weight: normal;
-  font-size: 18px;
+  font-size: 28px;
   position: relative;
-  width: 100%;
+  width: 3840px;
+  height: 600px;
   white-space: nowrap;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 
   &.flatten,
   &[size="xl"].flatten,
@@ -358,12 +377,7 @@ ccw-w {
     font-family: "katwijk_monoblack", "Lucida Console", Monaco, monospace;
   }
 
-  height: $cubit;
-
-  &[size="ultra-stretch"] {
-    font-size: 28px;
-    height: 240px;
-  }
+  // Removed height settings - now fixed at 600px above
 }
 
 // Custom classes: Clean Creatives
@@ -415,11 +429,11 @@ ccw-w.cleancreatives {
 ccw-flexwrap {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   position: relative; // <ccw-ticker> needs this, yeah?
   width: 100%;
 
-  flex: 10 0 0;
+  flex: 1 0 auto;
 }
 
 // Used in deadline/lifeline headings and ticker
@@ -432,25 +446,24 @@ ccw-panel {
   color: black;
   letter-spacing: -1px;
 
-  flex: 1 0 100%; // Take full width since we removed the lifeline panel
+  flex: 1 0 100%;
   overflow: hidden;
+  height: 600px;
 
-  height: $cubit - 24px;
+  ccw-span {
+    padding: $txtPad $txtPad * 5;
+  }
 
-  ccw-w[size="ultra-stretch"] & {
-    height: 240px - 24px;
-    
-    ccw-span {
-      padding: $txtPad $txtPad * 5;
-    }
+  >ccw-div {
+    text-align: left;
+  }
 
-    >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 48px;
-    }
+  >ccw-div>ccw-span:nth-of-type(1) {
+    font-size: 80px;
+  }
 
-    >ccw-div>ccw-span:nth-of-type(2) {
-      font-size: 40px;
-    }
+  >ccw-div>ccw-span:nth-of-type(2) {
+    font-size: 70px;
   }
 
   ccw-span {
@@ -469,6 +482,7 @@ ccw-panel {
     ccw-div {
       background: black;
       color: $accent;
+      text-align: left;
     }
 
     ccw-span:first-of-type {
@@ -496,34 +510,22 @@ $ccwFont: 70px;
 
 ccw-readout {
   flex: 2 0 0;
-  font-size: 59px;
+  font-size: 400px;
   letter-spacing: -2px;
-  line-height: 1.1;
+  line-height: 1.0;
   text-align: left;
-  margin: 0 12px;
+  margin: 0 100px;
   position: relative;
   overflow: hidden;
-
-  ccw-w[size="ultra-stretch"] & {
-    font-size: 160px;
-    line-height: 1.0;
-    margin: 0 40px;
-  }
 
   ccw-span {
     // Smaller labels
     line-height: 1;
-    margin-bottom: -6px;
-    margin-right: 2px;
-    font-size: 27px;
+    margin-bottom: -40px;
+    margin-right: 5px;
+    font-size: 160px;
     padding: 0;
     background: transparent;
-
-    ccw-w[size="ultra-stretch"] & {
-      font-size: 64px;
-      margin-bottom: -16px;
-      padding: 0;
-    }
   }
 }
 
