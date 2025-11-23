@@ -169,9 +169,9 @@ export default {
 
     // Items below are skin/theme-specific (TODO: settle on defaults for all skins/themes)
     // Ascending sizes work like breakpoints, adding an html attribute to the container
-    size: "normal",
+    size: "ultra-stretch",
     sizes: [
-      [0, "normal"],
+      [0, "ultra-stretch"],
     ],
     lastSize: 0,
   }),
@@ -191,9 +191,9 @@ export default {
   },
   methods: {
     setSize() {
-      // Always use normal mode - works on any resolution
+      // Always use ultra-stretch mode for signage display
       let chartShouldBeShown = this.showChart
-      this.size = "normal"
+      this.size = "ultra-stretch"
       this.ready = true
       this.showChart = chartShouldBeShown
     },
@@ -335,9 +335,10 @@ ccw-w {
   flex-direction: row-reverse;
   justify-content: space-between;
   font-weight: normal;
-  font-size: 18px;
+  font-size: 28px;
   position: relative;
-  width: 100%;
+  width: 3840px;
+  height: 600px;
   white-space: nowrap;
   overflow: hidden;
 
@@ -358,12 +359,7 @@ ccw-w {
     font-family: "katwijk_monoblack", "Lucida Console", Monaco, monospace;
   }
 
-  height: $cubit;
-
-  &[size="normal"] {
-    font-size: 18px;
-    height: 112px;
-  }
+  // Removed height settings - now fixed at 600px above
 }
 
 // Custom classes: Clean Creatives
@@ -434,23 +430,18 @@ ccw-panel {
 
   flex: 1 0 100%; // Take full width since we removed the lifeline panel
   overflow: hidden;
+  height: 600px;
 
-  height: $cubit - 24px;
+  ccw-span {
+    padding: $txtPad $txtPad * 5;
+  }
 
-  ccw-w[size="normal"] & {
-    height: 112px - 24px;
-    
-    ccw-span {
-      padding: $txtPad $txtPad * 2;
-    }
+  >ccw-div>ccw-span:nth-of-type(1) {
+    font-size: 120px;
+  }
 
-    >ccw-div>ccw-span:nth-of-type(1) {
-      font-size: 18px;
-    }
-
-    >ccw-div>ccw-span:nth-of-type(2) {
-      font-size: 16px;
-    }
+  >ccw-div>ccw-span:nth-of-type(2) {
+    font-size: 100px;
   }
 
   ccw-span {
@@ -496,34 +487,22 @@ $ccwFont: 70px;
 
 ccw-readout {
   flex: 2 0 0;
-  font-size: 59px;
+  font-size: 400px;
   letter-spacing: -2px;
-  line-height: 1.1;
+  line-height: 1.0;
   text-align: left;
-  margin: 0 12px;
+  margin: 0 100px;
   position: relative;
   overflow: hidden;
-
-  ccw-w[size="normal"] & {
-    font-size: 59px;
-    line-height: 1.1;
-    margin: 0 12px;
-  }
 
   ccw-span {
     // Smaller labels
     line-height: 1;
-    margin-bottom: -6px;
-    margin-right: 2px;
-    font-size: 27px;
+    margin-bottom: -40px;
+    margin-right: 5px;
+    font-size: 160px;
     padding: 0;
     background: transparent;
-
-    ccw-w[size="normal"] & {
-      font-size: 27px;
-      margin-bottom: -6px;
-      padding: 0;
-    }
   }
 }
 
