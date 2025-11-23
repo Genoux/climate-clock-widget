@@ -8,11 +8,11 @@
         <ccw-flexwrap>
           <ccw-panel deadline>
             <ccw-div>
-              <ccw-span>DEADLINE</ccw-span>
-              <ccw-span>{{ carbon.labels && carbon.labels[0] }}</ccw-span>
+              <ccw-span>DATE LIMITE</ccw-span>
+              <ccw-span>TEMPS RESTANT POUR LIMITER LE RÉCHAUFFEMENT CLIMATIQUE À 1,5 °C</ccw-span>
             </ccw-div>
             <ccw-readout>
-              {{ remaining.years }}<ccw-span>YRS</ccw-span>{{ pad(remaining.days, 3) }}<ccw-span>DAYS</ccw-span>{{
+              {{ remaining.years }}<ccw-span>ANS</ccw-span>{{ pad(remaining.days, 3) }}<ccw-span>JOURS</ccw-span>{{
                 pad(remaining.hours, 2) }}<ccw-span>:</ccw-span>{{ pad(remaining.minutes, 2) }}<ccw-span>:</ccw-span>{{
                 pad(remaining.seconds, 2) }}
             </ccw-readout>
@@ -120,8 +120,8 @@
 </template>
 
 <script>
-import { DateTime, Settings } from "luxon"
 import debounce from "lodash.debounce"
+import { DateTime, Settings } from "luxon"
 
 
 
